@@ -139,7 +139,7 @@ const items = [
     {
         name:"Private Jet",
         price:3000000,
-        imagesrc:"http://assets.stickpng.com/images/580b585b2edbce24c47b2d0c.png",
+        imagesrc:"https://assets.stickpng.com/images/580b585b2edbce24c47b2d0c.png",
         quantity:0
     },
  

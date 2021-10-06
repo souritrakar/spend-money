@@ -3,11 +3,10 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-
 import Typography from '@mui/material/Typography';
 import Custombutton from "./components/Custombutton"
 import moneyContext from "./components/moneyContext";
-import { formControlLabelClasses } from "@mui/material";
+import "./ItemCard.css"
 
 const formatNumber =(num) =>{
 
@@ -24,8 +23,10 @@ export default function ItemCard(props) {
   const { money } = useContext(moneyContext);
   const [buy, canBuy] = useState(false)
   const [sell, canSell] = useState(true)
+  
 
   useEffect(()=>{
+    
     if(number > 0){
       if(money-props.price >= 0){
         canSell(false)
@@ -38,7 +39,8 @@ export default function ItemCard(props) {
       canBuy(false)
     }
     
-  })
+
+  } , [number, money, props.price])
   return (
     <moneyContext.Consumer>
       {context =>(
@@ -50,15 +52,15 @@ export default function ItemCard(props) {
         width="250"
         image={props.imagesrc}
         alt={props.item}
-        className="card-img"
+        className="noselect"
         style={{objectFit:"scale-down"}}
       />
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
+        <Typography className="noselect" gutterBottom variant="h5" component="div">
           {props.name}
         </Typography>
 
-        <Typography gutterBottom variant="h6" component="div">
+        <Typography className="noselect" gutterBottom variant="h6" component="div">
           ${formatNumber(props.price)}
         </Typography>
      
@@ -66,18 +68,22 @@ export default function ItemCard(props) {
       </CardContent>
       
       <CardActions style={{marginBottom:0}}>
-     <Custombutton disabled={sell} style={{color:"white", backgroundColor:"red"}} onClick={()=>{
+     <Custombutton disabled={sell} style={{color:"white", backgroundColor:sell===true ? "grey" : "red"}} onClick={()=>{
        if(number>0){
          canSell(false)
         setNumber(number-1)
         context.dispatchUserEvent("SELL", props.price, props.name)
        }
       
-     }}>Sell</Custombutton>
-     <Typography style={{marginRight:"auto", marginLeft:"25%"}}  variant="h4" component="div">
+     }}>
+       Sell
+       </Custombutton>
+
+     <Typography className="noselect" style={{marginRight:"auto", marginLeft:"25%"}}  variant="h4" component="div">
           {number}
         </Typography>
-     <Custombutton disabled={buy} onClick={()=>{
+
+     <Custombutton  disabled={buy} onClick={()=>{
        if(money-props.price >=0){
          canBuy(true)
         setNumber(number+1)
@@ -88,10 +94,12 @@ export default function ItemCard(props) {
        }
        
      }}
-      style={{color:"white", backgroundColor:"green", marginRight:0, marginLeft:"auto"}}>
+      style={{color:"white", backgroundColor:buy === true ? "grey" : "green", marginRight:0, marginLeft:"auto"}}>
         Buy
       </Custombutton>
+
       </CardActions>
+      
     </Card>
       )}
     

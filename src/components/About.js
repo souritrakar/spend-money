@@ -5,7 +5,11 @@ import React from "react"
 export default function About(){
     return(
         <div>
-        <center><h3 style={{marginTop:"15%"}}>Hey 👋! Im Souritra, and this is a simple, fun web-app that simulates "spending" of Elon Musk's money.</h3></center>
+        <center><h1 style={{marginTop:"15%"}}>Hello 👋 Im Souritra, and this is a simple, fun web-app that simulates <br/> "spending" Jeff Bezos' money on a variety of things.</h1></center>
+        <br/>
+        <br/>
+
+        <center><a href="/" ><h1>Take me there</h1></a></center>
     
         </div>
     )

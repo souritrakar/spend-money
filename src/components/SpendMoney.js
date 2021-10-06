@@ -1,15 +1,14 @@
 
 import ReactRoundedImage from "react-rounded-image";
-import MuskImage from "../elonmusklogo.jfif"
+import BezosImage from "../jeffbezos.jfif"
 import 'react-js-stickynav/dist/index.css'
-import React , {useState, useEffect, useContext} from "react"
+import React , {useContext} from "react"
 import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
 import "bootstrap/dist/css/bootstrap.min.css"
 import "../Navbar.css"
 import ItemCard from "../ItemCard";
 import moneyContext from "./moneyContext"
-import { Grid, GridItem } from "@chakra-ui/react"
+import {Grid} from "@chakra-ui/react"
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -25,6 +24,7 @@ function SpendMoney() {
 
   const { money, itemsArray, totalCost } = useContext(moneyContext);
 
+
   const formatNumber =(num) =>{
 
   let dollarUSLocale = Intl.NumberFormat('en-US');
@@ -37,20 +37,33 @@ function SpendMoney() {
       {context=>(
         
         <div>
-        <nav class="navbar py-3 sticky-top navbar-dark bg-dark" role="navigation">
-              <div class="navbar-header">
+
+        {/* Sticky Navbar*/ }
+
+        <nav className="navbar py-3 sticky-top navbar-dark bg-dark" role="navigation">
+              <div className="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                  <span  class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
+                  <span  className="icon-bar"></span>
+                  <span className="icon-bar"></span>
+                  <span className="icon-bar"></span>
                 </button>    
               </div>
-              <a class="navbar-brand" href="#">${formatNumber(money)} left!</a>
+              <a className="navbar-brand" href="/about">${formatNumber(money)} left!</a>
+              <a className="navbar-brand" style={{marginLeft:"20%"}} href="/#about">
+                {
+                  totalCost>=4000 ?  ((((totalCost) / (191400000000)) *100).toPrecision(4) ): 0.00
+              
+              
+              }% spent!
+              </a>
            
             </nav>
          <br/>
-      
-         <center><Box
+
+        {/* Intro Banner*/ }
+
+         <center>
+           <Box
       
             sx={{
               width: "50%",
@@ -64,35 +77,38 @@ function SpendMoney() {
             <center><ReactRoundedImage imageWidth="150"
             
           imageHeight="150" 
-          image={MuskImage} />
+          image={BezosImage} />
           </center>
           <br/>
-          <center><h1>Spend Elon Musk's money!</h1></center>
+          <center><h1>"Spend" Jeff Bezos' money!</h1></center>
       
           
         
             
-            </Box></center>
+            </Box>
+            </center>
       
           <br/>
           <br/>
-         <center><Box
+         <center>
+           <Box
             sx={{
               width: "50%",
-              height: "370vh",
+              height: "380vh",
               bgcolor: '#F7F7F7',
-             
+              marginBottom:"10%"
+           
               
             }}
           >
          
-            
+        {/* Items displayed in a Grid*/ }
         
-         <Grid templateColumns="repeat(3, 1fr)" columnGap={15} gap={15}>
+         <Grid templateColumns="repeat(3, 1fr)" columnGap={15} gap={15} >
               {
                 itemsArray.map(item=>{
                   return(
-                    <Grid item xs={2} sm={4} md={4}>
+                    <Grid key={item.name} item xs={2} sm={4} md={4}>
             
                     <ItemCard price={item.price} imagesrc={item.imagesrc} name={item.name} />
                     
@@ -107,11 +123,18 @@ function SpendMoney() {
       
               </Grid>
       
-          </Box></center>
+          </Box>
+          </center>
+
          <br/>
          <br/>
+         <br/>
+
+        {/* Invoice/Receipt for transactions (buying, selling)*/ }
+
          <center><h2>Your Invoice</h2></center>
          <br/>
+
         <center> 
           <TableContainer id="table-container-image-area" style={{width:"50%"}} component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -131,9 +154,9 @@ function SpendMoney() {
            itemsArray.map(item=>{
              return(
                  <TableRow
-             
+                  key={item.name}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
+              >
                 <TableCell component="th" scope="row">
               {item.name}
               </TableCell>
@@ -154,27 +177,44 @@ function SpendMoney() {
         </TableBody>
       </Table>
     </TableContainer></center>
+
       <br/>
+
+       {/* Button to download generated invoice as .png format*/ }
+
     <Custombutton onClick={()=>{
        html2canvas(document.getElementById("table-container-image-area")).then(canvas => {
+         //uuidv4 API to generate random file-names.
          var fileName=""
          fetch("https://www.uuidtools.com/api/generate/v4/count/1").then(res=>res.json()).then(response=>{
           fileName = "Receipt"+response[0]+".png"
          })
-       var downloadLink = document.createElement("a");
+
+         //Downloading it on the user's computer
+
+        var downloadLink = document.createElement("a");
         downloadLink.href = canvas.toDataURL();
         downloadLink.download = fileName;
         downloadLink.click();
        }
         
       ) 
-    }} style={{backgroundColor:"red", color:"white"}}>Download Invoice</Custombutton>
+    }} 
+    style={{backgroundColor:"red", color:"white"}}
+    >
+      Download Invoice
+      
+      </Custombutton>
 
      <br/>
      <br/>
-        <center><h1>Made by Souritra Kar</h1></center>
-        <br/>
-          </div>
+
+      {/* About*/ }
+
+    <center><a href="/#about" style={{textDecoration:"none"}} ><h1>Made by Souritra Kar</h1></a></center>
+      <br/>
+
+      </div>
       )}
     
     </moneyContext.Consumer>
